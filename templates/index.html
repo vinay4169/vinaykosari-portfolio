@@ -1,0 +1,129 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vinay Kosari Portfolio Terminal</title>
+  <link rel="stylesheet" href="/static/terminal.css">
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      font-family: Consolas, monospace;
+      color: #ffffff;
+      font-size: 16px;
+      border: 1px solid #ffffff;
+    }
+    #icon { width: 16px; height: 16px; vertical-align: middle; margin-right: 8px; }
+    #terminal { width: 100%; height: calc(100vh - 34px); padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; overflow-y: auto; }
+    #terminal-output { flex: 1; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; }
+    #terminal-output::-webkit-scrollbar { display: none; }
+    #input-line { position: sticky; bottom: 0; background: inherit; z-index: 2; display: flex; align-items: center; width: 100%; min-height: 28px; cursor: text; margin-top: 0; }
+    .line { white-space: pre-wrap; line-height: 1.4; margin-bottom: 0; }
+    .prompt { margin-right: 8px; }
+    #terminal-input { background: none; border: none; outline: none; color: #ffffff; font-family: Consolas, monospace; font-size: 16px; width: 100%; flex: 1; min-width: 0; caret-color: #ffffff; z-index: 1; }
+    a { color: #00FF00; text-decoration: underline; }
+    ::selection { background: #ffffff; color: black; }
+
+    /* Skills hover */
+    .skill { position: relative; cursor: pointer; color: #00FF00; transition: color 0.2s; margin-right: 8px; display: inline-block; }
+    .skill:hover { color: #fff; }
+    .skill-logo { position: absolute; left: 100%; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; margin-left: 6px; display: none; vertical-align: middle; z-index: 10; }
+    .skill:hover .skill-logo { display: inline-block; }
+
+    /* Terminal header */
+    #terminal-header { display: flex; align-items: center; justify-content: space-between; background: #1e1e1e; border-bottom: 1px solid #333; height: 32px; padding: 0 0px; box-sizing: border-box; user-select: none; }
+    .terminal-title { padding-left: 12px; font-size: 15px; color: #cccccc; font-family: Consolas, monospace; letter-spacing: 0.5px; }
+    .window-controls { display: flex; gap: 8px; }
+    .window-btn { width: 40px; height: 28px; display: flex; align-items: center; justify-content: center; padding-right: 1px; font-size: 16px; cursor: pointer; color: #cccccc; transition: background 0.2s, color 0.2s; }
+    .window-btn:hover { background: #444; color: #fff; }
+    .window-btn.close:hover { background: #e81123; color: #fff; }
+  </style>
+</head>
+<body>
+  <div id="terminal-header">
+    <span class="terminal-title"><img id="icon" src="/static/icons/CMD-Icon_(small).png">Command Prompt</span>
+    <div class="window-controls">
+      <span class="window-btn close" title="Close">✕</span>
+    </div>
+  </div>
+  <div id="terminal">
+    <div id="terminal-output">
+      <div class="line">Portfolio [BOD 18.12.2003]</div>
+      <div class="line">(c) Vinay Kosari Corporation. All rights reserved.</div>
+      <div class="line"></div>
+      <div class="line">C:\Users\&gt; Type 'help' to view commands.</div>
+      <br>
+      <div id="input-line">
+        <span class="prompt">C:\Users\vinay kosari&gt;</span>
+        <div id="terminal-input" contenteditable="true" spellcheck="false" autofocus></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/terminal.js"></script>
+  <script>
+    const terminalInput = document.getElementById('terminal-input');
+    const terminalOutput = document.getElementById('terminal-output');
+    const promptText = 'C:\\Users\\VinayKosari&gt;';
+
+    document.getElementById('input-line').addEventListener('mousedown', () => { terminalInput.focus(); });
+
+    terminalInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const command = terminalInput.innerText.replace(/\n/g, '').trim();
+        if (!command) return;
+
+        const line = document.createElement('div');
+        line.className = 'line';
+        line.innerHTML = `<span class='prompt'>${promptText}</span>${command}`;
+        terminalOutput.insertBefore(line, document.getElementById('input-line'));
+
+        let output = '';
+        switch(command.toLowerCase()) {
+          case 'help':
+            output = `Available commands:\n\n  help     - lists available commands\n  info     - about this terminal developer\n  contact  - to get in touch\n  projects - proof of work\n  skills   - developer weapons\n  resume   - download resume`;
+            break;
+          case 'info':
+            output = `Vinay Kosari\nPython Developer | ML Engineer\nPortfolio Terminal Example`;
+            break;
+          case 'contact':
+            output = `Contact Info:<br><br>  Email: <a href='mailto:vinaykosari197@gmail.com'>vinaykosari197@gmail.com</a><br>  LinkedIn: <a href='https://www.linkedin.com/in/vinay-kosari-67aa422a4/' target='_blank'>linkedin.com/in/vinay-kosari-67aa422a4/</a><br>  GitHub: <a href='https://github.com/vinay4169' target='_blank'>github.com/vinay4169</a>`;
+            break;
+          case 'projects':
+            output = `Projects:<br><br>
+AI Health Care Bot System - Python (<a href="https://github.com/vinay4169/AI-Healthcare-Bot-System" target="_blank">github</a>)<br>
+Real-Time Face Mask Detection - TensorFlow (<a href="https://github.com/vinay4169/Face-Mask-Detection" target="_blank">github</a>)<br>
+Controlling YouTube Using Hand Gestures - OpenCV (<a href="https://github.com/vinay4169/YouTube-Hand-Gesture-Control" target="_blank">github</a>)<br>
+More: <a href="https://github.com/vinay4169" target="_blank">github.com/vinay4169</a> | <a href="https://www.linkedin.com/in/vinay-kosari-67aa422a4/" target="_blank">LinkedIn</a>`;
+            break;
+          case 'skills':
+            output = `Skills:<br><br>
+<b>Programming:</b> Python, HTML5, CSS3, JavaScript<br>
+<b>Technologies:</b> SQL, RESTAPI, Git, GitHub, Docker<br>
+<b>CS Fundamentals:</b> DBMS, OOP, SDLC, OS, Networking, Data structures, Algorithms<br>
+<b>AI/ML:</b> Machine Learning, Transformers, Rule-Based Systems`;
+            break;
+          case 'resume':
+            output = `<a href='/static/resume/Vinay_Kosari_Resume.pdf' download>Download Resume (PDF)</a>`;
+            break;
+          default:
+            output = `Unrecognized command: ${command}`;
+        }
+
+        const outputLine = document.createElement('div');
+        outputLine.className = 'line';
+        outputLine.innerHTML = output;
+        terminalOutput.insertBefore(outputLine, document.getElementById('input-line'));
+        terminalInput.innerText = '';
+      }
+    });
+
+    const closeBtn = document.querySelector('.window-btn.close');
+    closeBtn.addEventListener('click', () => {
+      document.getElementById('terminal-header').style.display = 'none';
+      document.getElementById('terminal').style.display = 'none';
+      document.body.style.border = 'none';
+    });
+  </script>
+</body>
+</html>
